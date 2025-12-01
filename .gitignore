@@ -1,0 +1,95 @@
+# ===== GLOBAL =====
+node_modules/
+dist/
+build/
+*.log
+*.tsbuildinfo
+.DS_Store
+.vscode/
+.idea/
+.env
+.env.*
+
+# ===== MONOREPO PACKAGES =====
+packages/*/node_modules/
+packages/*/dist/
+packages/*/build/
+packages/*/.env
+packages/*/.env.*
+
+# =============================
+#           CONTRACTS
+#      (Hardhat Project)
+# =============================
+
+contracts/artifacts/
+contracts/cache/
+contracts/coverage/
+contracts/coverage.json
+contracts/typechain/
+contracts/typechain-types/
+contracts/broadcast/
+contracts/deployments/
+contracts/.openzeppelin/
+contracts/.env
+contracts/.env.*
+
+# Optional if using prettier-plugin-solidity
+contracts/.prettier-cache
+
+# =============================
+#             WEB
+#    (Next.js App Router)
+# =============================
+
+web/defi-vault-app/.next/
+web/defi-vault-app/out/
+web/defi-vault-app/.vercel/
+web/defi-vault-app/.env
+web/defi-vault-app/.env.*
+web/defi-vault-app/.turbo/
+web/defi-vault-app/.cache/
+web/defi-vault-app/node_modules/
+web/defi-vault-app/coverage/
+web/defi-vault-app/npm-debug.log*
+
+# Vercel build cache
+web/defi-vault-app/.vercel/
+
+# Production build
+web/defi-vault-app/.output/
+
+# =============================
+#            AGENTS
+#         (IQAI ADK-TS)
+# =============================
+
+agents/node_modules/
+agents/dist/
+agents/build/
+agents/.env
+agents/.env.*
+agents/coverage/
+agents/*.log
+
+# ADK-TS local data
+agents/.adk/
+agents/cache/
+agents/tmp/
+
+# TypeScript
+agents/*.tsbuildinfo
+
+# If mixing Python in agents (sometimes happens)
+agents/__pycache__/
+agents/**/*.pyc
+agents/.pytest_cache/
+
+# =============================
+#           OS / MISC
+# =============================
+
+Thumbs.db
+*.swp
+*.swo
+*.tmp

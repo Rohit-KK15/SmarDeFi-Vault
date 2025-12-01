@@ -1,0 +1,22 @@
+{
+  "name": "defi-portfolio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.3",
+  "devDependencies": {
+    "@types/react": "^19.2.6",
+    "hardhat": "^3.0.11"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.22",
+    "ethers": "^6.15.0",
+    "typescript": "^5.9.3"
+  }
+}

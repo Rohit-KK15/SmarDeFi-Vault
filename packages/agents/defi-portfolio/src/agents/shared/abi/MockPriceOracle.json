@@ -1,0 +1,98 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "MockPriceOracle",
+  "sourceName": "contracts/mocks/MockPriceOracle.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "initialPrice",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "getPrice",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getPrices",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "linkPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "wethPrice",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "price",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "p",
+          "type": "uint256"
+        }
+      ],
+      "name": "setPrice",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608034606057601f61020438819003918201601f19168301916001600160401b0383118484101760655780849260209460405283398101031260605751600080546001600160a01b03191633179055600155604051610188908161007c8239f35b600080fd5b634e487b7160e01b600052604160045260246000fdfe608080604052600436101561001357600080fd5b60003560e01c90816341976e0914610125575080638da5cb5b146100fc57806391b7f5ed146100a4578063a035b1fe146100865763bd9a548b1461005657600080fd5b346100815760003660031901126100815760406001548151908152670de0b6b3a76400006020820152f35b600080fd5b34610081576000366003190112610081576020600154604051908152f35b34610081576020366003190112610081576000546001600160a01b031633036100cf57600435600155005b60405162461bcd60e51b815260206004820152600560248201526437bbb732b960d91b6044820152606490fd5b34610081576000366003190112610081576000546040516001600160a01b039091168152602090f35b34610081576020366003190112610081576004356001600160a01b03811603610081576020906001548152f3fea26469706673582212206a608cbd9f206a2afe9d3a89fd83d40f31ecb29809c14d52ef4c7a3710a0d07664736f6c634300081c0033",
+  "deployedBytecode": "0x608080604052600436101561001357600080fd5b60003560e01c90816341976e0914610125575080638da5cb5b146100fc57806391b7f5ed146100a4578063a035b1fe146100865763bd9a548b1461005657600080fd5b346100815760003660031901126100815760406001548151908152670de0b6b3a76400006020820152f35b600080fd5b34610081576000366003190112610081576020600154604051908152f35b34610081576020366003190112610081576000546001600160a01b031633036100cf57600435600155005b60405162461bcd60e51b815260206004820152600560248201526437bbb732b960d91b6044820152606490fd5b34610081576000366003190112610081576000546040516001600160a01b039091168152602090f35b34610081576020366003190112610081576004356001600160a01b03811603610081576020906001548152f3fea26469706673582212206a608cbd9f206a2afe9d3a89fd83d40f31ecb29809c14d52ef4c7a3710a0d07664736f6c634300081c0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

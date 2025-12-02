@@ -1,0 +1,95 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "MockProtocolDataProvider",
+  "sourceName": "contracts/mocks/MockProtocolDataProvider.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "aTokenFor",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "underlying",
+          "type": "address"
+        }
+      ],
+      "name": "getReserveTokensAddresses",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "aToken",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "stableDebtToken",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "variableDebtToken",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "underlying",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "aToken",
+          "type": "address"
+        }
+      ],
+      "name": "setAToken",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x60808060405234602757600180546001600160a01b031916331790556101ef908161002d8239f35b600080fdfe608080604052600436101561001357600080fd5b60003560e01c9081638da5cb5b1461017f57508063a1e26f4b146100e2578063d2493b6c146100925763f468d4ed1461004b57600080fd5b3461008d57602036600319011261008d576001600160a01b0361006c6101a3565b166000526000602052602060018060a01b0360406000205416604051908152f35b600080fd5b3461008d57602036600319011261008d576001600160a01b036100b36101a3565b166000526000602052606060018060a01b03604060002054166040519081526000602082015260006040820152f35b3461008d57604036600319011261008d576100fb6101a3565b6024356001600160a01b038116919082900361008d576001546001600160a01b0316330361014d576001600160a01b0316600090815260208190526040902080546001600160a01b0319169091179055005b60405162461bcd60e51b815260206004820152600a60248201526937b7363c9037bbb732b960b11b6044820152606490fd5b3461008d57600036600319011261008d576001546001600160a01b03168152602090f35b600435906001600160a01b038216820361008d5756fea2646970667358221220634a2c40d3d453029c3dd5439f433fbfc8ccaa89252b4b30dc2ca6434e98213c64736f6c634300081c0033",
+  "deployedBytecode": "0x608080604052600436101561001357600080fd5b60003560e01c9081638da5cb5b1461017f57508063a1e26f4b146100e2578063d2493b6c146100925763f468d4ed1461004b57600080fd5b3461008d57602036600319011261008d576001600160a01b0361006c6101a3565b166000526000602052602060018060a01b0360406000205416604051908152f35b600080fd5b3461008d57602036600319011261008d576001600160a01b036100b36101a3565b166000526000602052606060018060a01b03604060002054166040519081526000602082015260006040820152f35b3461008d57604036600319011261008d576100fb6101a3565b6024356001600160a01b038116919082900361008d576001546001600160a01b0316330361014d576001600160a01b0316600090815260208190526040902080546001600160a01b0319169091179055005b60405162461bcd60e51b815260206004820152600a60248201526937b7363c9037bbb732b960b11b6044820152606490fd5b3461008d57600036600319011261008d576001546001600160a01b03168152602090f35b600435906001600160a01b038216820361008d5756fea2646970667358221220634a2c40d3d453029c3dd5439f433fbfc8ccaa89252b4b30dc2ca6434e98213c64736f6c634300081c0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

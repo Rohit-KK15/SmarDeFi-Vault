@@ -13,9 +13,17 @@ export async function chain_read(contract: string, abi: any, method: string, arg
 
 export async function chain_write(contract: string, abi: any, method: string, args: any[] = []) {
   const c = new ethers.Contract(contract, abi, signer);
+
   const tx = await c[method](...args);
-  return await tx.wait();
+
+  return {
+    hash: tx.hash,
+    from: tx.from,
+    to: tx.to,
+    nonce: tx.nonce
+  };
 }
+
 
 export function toStringBN(value: any): any {
     if (typeof value === "bigint") return value.toString();

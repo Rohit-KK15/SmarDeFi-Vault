@@ -10,7 +10,9 @@
 		"start": "node dist/index.js",
 		"clean": "rimraf dist",
 		"prebuild": "pnpm clean",
-		"automate:cron": "ts-node ./src/crons/automation.ts"
+		"automate:cron": "ts-node ./src/crons/automation.ts",
+		"automate:prod": "node dist/crons/automation.js",
+		"monitor": "pnpm automate:cron"
 	},
 	"repository": {
 		"type": "git",
@@ -30,7 +32,7 @@
 	},
 	"homepage": "https://github.com/IQAICOM/adk-agent-starter#readme",
 	"dependencies": {
-		"@iqai/adk": "^0.5.4",
+		"@iqai/adk": "^0.5.7",
 		"@openrouter/ai-sdk-provider": "^1.2.8",
 		"dedent": "^1.7.0",
 		"dotenv": "^17.2.2",

@@ -7,6 +7,7 @@
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsx watch src/index.ts",
+		"dev:server": "ts-node src/server.ts",
 		"start": "node dist/index.js",
 		"clean": "rimraf dist",
 		"prebuild": "pnpm clean",
@@ -34,12 +35,16 @@
 	"dependencies": {
 		"@iqai/adk": "^0.5.7",
 		"@openrouter/ai-sdk-provider": "^1.2.8",
+		"cors": "^2.8.5",
 		"dedent": "^1.7.0",
 		"dotenv": "^17.2.2",
+		"express": "^5.2.1",
 		"node-cron": "^4.2.1",
 		"zod": "^4.1.12"
 	},
 	"devDependencies": {
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.6",
 		"@types/node": "^24.3.1",
 		"rimraf": "^6.0.1",
 		"ts-node": "^10.9.2",

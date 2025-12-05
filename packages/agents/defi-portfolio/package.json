@@ -1,7 +1,7 @@
 {
-	"name": "adk-simple-agent",
+	"name": "smardefi-vault-agent",
 	"version": "0.0.1",
-	"description": "adk-simple-agent is a starter project for creating simple adk agent",
+	"description": "SmarDeFi Vault Agent monitors and manages the SmarDeFi Vault and its Strategies.",
 	"main": "dist/index.js",
 	"private": true,
 	"scripts": {
@@ -17,21 +17,20 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/IQAICOM/adk-agent-starter.git"
+		"url": "git+https://github.com/Rohit-KK15/SmarDeFi-Vault"
 	},
 	"keywords": [
 		"ai",
 		"agent",
-		"mcp",
-		"adk-ts",
-		"IQAI"
+		"smardefi",
+		"vault"
 	],
-	"author": "IQAI",
+	"author": "RohitKK-15",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/IQAICOM/adk-agent-starter/issues"
+		"url": "https://github.com/Rohit-KK15/SmarDeFi-Vault/issues"
 	},
-	"homepage": "https://github.com/IQAICOM/adk-agent-starter#readme",
+	"homepage": "https://github.com/Rohit-KK15/SmarDeFi-Vault/blob/master/README.md",
 	"dependencies": {
 		"@iqai/adk": "^0.5.7",
 		"@openrouter/ai-sdk-provider": "^1.2.8",

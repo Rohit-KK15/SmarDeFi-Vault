@@ -1,4 +1,4 @@
-import { createTool } from "@iqai/adk";
+import { createTool, ToolContext } from "@iqai/adk";
 import { z } from "zod";
 import { 
   StrategyLeverageABI, 
@@ -259,6 +259,76 @@ export const get_leverage_strategy_state = createTool({
   }
 });
 
+// Core APY calculation logic (extracted for reuse)
+async function calculateVaultAPY(toolContext: ToolContext) {
+  // Load previous state from context
+  const stateKey = "session.vault_apy_state";
+  const state = toolContext.state[stateKey] as {
+    lastTVL?: number;
+    lastTimestamp?: number;
+  } | undefined;
+
+  const lastTVL = state?.lastTVL ? Number(state.lastTVL) : 0;
+  const lastTs = state?.lastTimestamp ? Number(state.lastTimestamp) : 0;
+  const now = Math.floor(Date.now() / 1000);
+
+  // Read current TVL
+  const tvl = Number(
+    await chain_read(env.VAULT_ADDRESS, VaultABI.abi, "totalManagedAssets", [])
+  );
+
+  // First run - store baseline state
+  if (lastTVL === 0 || lastTs === 0) {
+    // Store initial state in context
+    toolContext.state[stateKey] = {
+      lastTVL: tvl,
+      lastTimestamp: now
+    };
+
+    return {
+      apy: 0,
+      readable: "0%",
+      message: "APY baseline set (first run).",
+      tvl
+    };
+  }
+
+  let dt: number = now - lastTs;
+  if (dt <= 0) dt = 1;
+
+  const growth = (tvl - lastTVL) / lastTVL;
+  const YEAR = 365 * 24 * 3600;
+
+  const apy = (growth / dt) * YEAR;
+  const readable = `${(apy * 100).toFixed(2)}%`;
+
+  // Update state in context with new values
+  toolContext.state[stateKey] = {
+    lastTVL: tvl,
+    lastTimestamp: now
+  };
+
+  return {
+    apy,
+    readable,
+    tvl,
+    growth,
+    dt
+  };
+}
+
+export const get_vault_apy = createTool({
+  name: "get_vault_apy",
+  description: "Calculates the vault APY based on TVL growth.",
+  fn: async (_params: {}, toolContext: ToolContext) => {
+    return calculateVaultAPY(toolContext);
+  }
+});
+
+// Export the core function for use in helper
+export { calculateVaultAPY };
+
+
 
 /* -----------------------------------------------------
    2️⃣ WRITE TOOLS (TX SENDING)
@@ -477,6 +547,7 @@ export default {
   auto_deleverage,
   get_token_prices,
   get_leverage_strategy_state,
+  get_vault_apy,
   update_strategy_target_weights,
   toggle_leverage_strategy_pause,
   update_leverage_params,

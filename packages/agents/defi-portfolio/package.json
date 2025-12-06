@@ -1,7 +1,7 @@
 {
-	"name": "smardefi-vault-agent",
+	"name": "metavault-ai",
 	"version": "0.0.1",
-	"description": "SmarDeFi Vault Agent monitors and manages the SmarDeFi Vault and its Strategies.",
+	"description": "MetaVault AI monitors and manages the MetaVault and its Strategies.",
 	"main": "dist/index.js",
 	"private": true,
 	"scripts": {
@@ -17,20 +17,21 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Rohit-KK15/SmarDeFi-Vault"
+		"url": "git+https://github.com/Rohit-KK15/MetaVault-AI"
 	},
 	"keywords": [
 		"ai",
 		"agent",
-		"smardefi",
-		"vault"
+		"metavault",
+		"vault",
+		""
 	],
-	"author": "RohitKK-15",
+	"author": "Rohit_KK",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/Rohit-KK15/SmarDeFi-Vault/issues"
+		"url": "https://github.com/Rohit-KK15/MetaVault-AI/issues"
 	},
-	"homepage": "https://github.com/Rohit-KK15/SmarDeFi-Vault/blob/master/README.md",
+	"homepage": "https://github.com/Rohit-KK15/MetaVault-AI/blob/master/README.md",
 	"dependencies": {
 		"@iqai/adk": "^0.5.7",
 		"@openrouter/ai-sdk-provider": "^1.2.8",

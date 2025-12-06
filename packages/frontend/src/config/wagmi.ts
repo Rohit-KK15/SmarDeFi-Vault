@@ -1,28 +1,73 @@
-import { http, createConfig } from 'wagmi';
-import { mainnet, sepolia, localhost } from 'wagmi/chains';
-import { injected, metaMask, walletConnect } from 'wagmi/connectors';
+import { http, createConfig, createStorage, cookieStorage } from 'wagmi'
+import { sepolia } from 'wagmi/chains'
+import { injected, walletConnect } from 'wagmi/connectors'
 
+// Get environment variables - use proper Next.js env format
+const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || ''
+const sepoliaRpcUrl = process.env.RPC_URL || `https://eth-sepolia.g.alchemy.com/v2/demo`
+
+/**
+ * Wagmi configuration with multiple chains and connectors
+ * Supports: Injected wallets, WalletConnect, and Coinbase Wallet
+ */
 export const config = createConfig({
-    chains: [localhost, sepolia, mainnet],
-    connectors: [
-        metaMask({
-            dappMetadata: {
-                name: "DeFi Portfolio Vault",
-                url: typeof window !== "undefined" ? window.location.origin : "http://localhost:3000",
-            },
-        }),
-        injected(),
-        ...(process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
-            ? [
-                walletConnect({
-                    projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
-                }),
-            ]
-            : []),
-    ],
-    transports: {
-        [localhost.id]: http(),
-        [sepolia.id]: http(),
-        [mainnet.id]: http(),
-    },
-});
+  // Define supported chains
+  chains: [sepolia],
+
+  // Configure wallet connectors
+  connectors: [
+    // Injected connector for browser extension wallets (MetaMask, Rabby, etc.)
+    injected({
+      shimDisconnect: true,
+      target() {
+        return {
+          id: 'injected',
+          name: 'Browser Wallet',
+          provider: typeof window !== 'undefined' ? window.ethereum : undefined,
+        }
+      },
+    }),
+
+    // WalletConnect v2 for mobile wallets and QR code scanning (client-side only)
+    ...(typeof window !== 'undefined' ? [
+      walletConnect({
+        projectId: walletConnectProjectId,
+        metadata: {
+          name: 'MetaVault AI',
+          description: 'Intelligent DeFi Portfolio Management',
+          url: window.location.origin,
+          icons: [`${window.location.origin}/logo.png`],
+        },
+        showQrModal: true,
+        qrModalOptions: {
+          themeMode: 'dark',
+          themeVariables: {
+            '--wcm-z-index': '9999',
+          },
+        },
+      })
+    ] : []),
+
+  ],
+
+  // Configure RPC transports for each chain
+  transports: {
+    [sepolia.id]: http(sepoliaRpcUrl)
+  },
+
+  // Use noop storage for SSR compatibility (no IndexedDB required)
+  storage: createStorage({
+    storage: cookieStorage,
+  }),
+
+  // Enable Server-Side Rendering support
+  ssr: true,
+
+  // Batch multiple calls into a single RPC request
+  batch: {
+    multicall: true,
+  },
+})
+
+// Export config for use in providers and components
+export default config

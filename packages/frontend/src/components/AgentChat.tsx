@@ -77,9 +77,45 @@ export function AgentChat() {
       };
       setMessages((prev) => [...prev, assistantMessage]);
 
-      if (data.unsignedTx && walletClient) {
+      if (data.unsignedTx && walletClient ) {
         console.log("Unsigned TX received from agent:", data.unsignedTx);
-        const txHash = await walletClient.sendTransaction(data.unsignedTx);
+        let txHash = await walletClient.sendTransaction(data.unsignedTx);
+        
+        const followup = await fetch("/api/agent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: "Transaction Signed !",
+            sessionId,
+            wallet: address
+          }),
+        });
+    
+        const followData = await followup.json();
+    
+        // Render the agent's deposit message
+        setMessages(prev => [
+          ...prev,
+          {
+            role: "assistant",
+            content: followData.reply,
+            timestamp: new Date(),
+          }
+        ]);
+    
+        // If this follow-up ALSO returns a tx → send deposit transaction
+        if (followData.unsignedTx) {
+          txHash = await walletClient.sendTransaction(followData.unsignedTx);
+    
+          setMessages(prev => [
+            ...prev,
+            {
+              role: "assistant",
+              content: `💰 Deposit transaction sent!\n\n**Tx Hash:** ${txHash}`,
+              timestamp: new Date(),
+            }
+          ]);
+        }
 
         const txMessage: Message = {
           role: "assistant",

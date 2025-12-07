@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { CONTRACTS, VAULT_ABI } from "@/lib/contracts";
 import { parseTokenAmount, formatTokenAmount, formatNumber } from "@/lib/utils";
@@ -22,12 +22,8 @@ export function WithdrawModal({ onClose }: WithdrawModalProps) {
     args: address ? [address] : undefined,
   });
 
-  // Get withdraw fee from vault
-  const { data: withdrawFeeBps } = useReadContract({
-    address: CONTRACTS.VAULT,
-    abi: VAULT_ABI,
-    functionName: "withdrawFeeBps",
-  });
+  // Hardcode 1% withdrawal fee (100 basis points)
+  const WITHDRAW_FEE_BPS = BigInt(100);
 
   // Convert shares to assets to show withdrawal amount
   const { data: assetsOut } = useReadContract({
@@ -39,13 +35,16 @@ export function WithdrawModal({ onClose }: WithdrawModalProps) {
 
   const { writeContract: withdraw, data: withdrawHash } = useWriteContract();
 
-  const { isLoading: isWithdrawing } = useWaitForTransactionReceipt({
+  const { isLoading: isWithdrawing, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: withdrawHash,
-    onSuccess: () => {
+  });
+
+  useEffect(() => {
+    if (isConfirmed) {
       setAmount("");
       onClose();
-    },
-  });
+    }
+  }, [isConfirmed, onClose]);
 
   const handleWithdraw = () => {
     if (!amount) return;
@@ -62,8 +61,8 @@ export function WithdrawModal({ onClose }: WithdrawModalProps) {
   const hasShares = userShares ? sharesBigInt <= userShares : false;
 
   // Calculate fee and amount to receive
-  const withdrawFee = withdrawFeeBps && assetsOut
-    ? (assetsOut * withdrawFeeBps) / BigInt(10000)
+  const withdrawFee = assetsOut
+    ? (assetsOut * WITHDRAW_FEE_BPS) / BigInt(10000)
     : BigInt(0);
   const amountToReceive = assetsOut && withdrawFee
     ? assetsOut - withdrawFee

@@ -24,7 +24,7 @@ async function main() {
 
 		// Pass required arguments to MonitoringService constructor
 		// (Assuming runner.ask is the handler function and "telegram" is a label/context. Modify as needed.)
-		const autoService = new MonitoringService("*/15 * * * *", "*/5 * * * *", telegramRunner);
+		const autoService = new MonitoringService("*/15 * * * *", "*/5 * * * *", "*/1 * * * *", telegramRunner);
 		autoService.start();
 
 		// Keep the process running

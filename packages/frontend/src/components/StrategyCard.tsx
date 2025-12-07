@@ -2,28 +2,48 @@
 
 import { formatTokenAmount, formatNumber, formatAddress } from "@/lib/utils";
 import { formatUnits } from "viem";
+import { Copy, Check } from "lucide-react";
+import { useState } from "react";
 
 interface StrategyCardProps {
   strategy: string;
+  name?: string;
   balance: bigint;
   target: bigint;
   totalManaged: bigint;
 }
 
-export function StrategyCard({ strategy, balance, target, totalManaged }: StrategyCardProps) {
+export function StrategyCard({ strategy, name, balance, target, totalManaged }: StrategyCardProps) {
+  const [copied, setCopied] = useState(false);
   const balanceFormatted = formatTokenAmount(balance);
   const targetBps = Number(target);
   const targetPercent = targetBps / 100;
-  const actualPercent = totalManaged > 0n 
-    ? (Number(balance) * 10000) / Number(totalManaged) / 100 
+  const actualPercent = totalManaged > 0n
+    ? (Number(balance) * 10000) / Number(totalManaged) / 100
     : 0;
   const deviation = actualPercent - targetPercent;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(strategy);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
       <div className="flex items-center justify-between mb-3">
         <div>
-          <p className="font-mono text-sm text-gray-400">{formatAddress(strategy)}</p>
+          <div className="flex items-center gap-2">
+            <p className="font-semibold text-white">{name || "Strategy"}</p>
+            <button
+              onClick={handleCopy}
+              className="text-gray-400 hover:text-white transition-colors p-1"
+              title="Copy strategy address"
+            >
+              {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
+            </button>
+          </div>
+          <p className="font-mono text-xs text-gray-500">{formatAddress(strategy)}</p>
           <p className="text-lg font-semibold mt-1">{formatNumber(balanceFormatted)} LINK</p>
         </div>
         <div className="text-right">

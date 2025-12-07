@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const AGENT_URL = process.env.AGENT_API_URL || "http://localhost:3001/chat";
+    const AGENT_URL = process.env.AGENT_API_URL || "http://localhost:3002/chat";
 
     // 🔗 Forward to Agent Backend
     const agentRes = await fetch(AGENT_URL, {

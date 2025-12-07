@@ -14,7 +14,6 @@ config();
 export const envSchema = z.object({
 	ADK_DEBUG: z.coerce.boolean().default(false),
 	OPEN_ROUTER_KEY: z.string(),
-	GOOGLE_API_KEY: z.string(),
 	LLM_MODEL: z.string().default("openai/gpt-4.1"),
 	TELEGRAM_BOT_TOKEN: z.string().min(1),
 	TELEGRAM_CHANNEL_ID: z.string().min(1),

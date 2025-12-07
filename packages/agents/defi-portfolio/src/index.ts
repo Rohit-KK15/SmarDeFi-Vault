@@ -3,6 +3,7 @@ import * as http from "node:http";
 import { getRootAgent } from "./agents/agent.js";
 import { createTelegramAgent } from "./agents/telegram-agent/agent.js";
 import { MonitoringService } from "./crons/automation.js"
+import { startChatServer } from "./server.js";
 
 
 async function main() {
@@ -26,6 +27,10 @@ async function main() {
 		// (Assuming runner.ask is the handler function and "telegram" is a label/context. Modify as needed.)
 		const autoService = new MonitoringService("*/15 * * * *", "*/5 * * * *", "*/1 * * * *", telegramRunner);
 		autoService.start();
+
+		// START EXPRESS CHAT SERVER
+		await startChatServer();  
+		console.log("🌐 ChatAgent REST server started");
 
 		// Keep the process running
 		await keepAlive();

@@ -220,13 +220,17 @@ app.post("/session/reset/:id", (req, res) => {
 // START SERVER
 // ------------------------------------------------
 
-app.listen(PORT, async () => {
-  console.log("\n=====================================");
-  console.log("🚀 Vault ChatAgent Server Started");
-  console.log("=====================================");
-  console.log(`📡 Listening on http://localhost:${PORT}`);
-  console.log(`⏰ ${new Date().toISOString()}`);
-  console.log("=====================================\n");
+export async function startChatServer() {
+  const PORT = process.env.CHAT_PORT || 8080;
 
-  await initializeAgent();
-});
+  app.listen(PORT, async () => {
+    console.log("\n=====================================");
+    console.log("🚀 Vault ChatAgent Server Started");
+    console.log("=====================================");
+    console.log(`📡 Listening on http://localhost:${PORT}`);
+    console.log(`⏰ ${new Date().toISOString()}`);
+    console.log("=====================================\n");
+
+    await initializeAgent();
+  });
+}

@@ -25,11 +25,7 @@ export const envSchema = z.object({
 	STRATEGY_LEVERAGE_ADDRESS: z.string().min(1),
 	STRATEGY_AAVE_ADDRESS: z.string().min(1),
 	MOCK_AAVE_POOL_ADDRESS: z.string().min(1),
-	MOCK_SWAP_ROUTER_ADDRESS: z.string().min(1),
-	MOCK_PDP_ADDRESS: z.string().min(1),
 	LINK_ADDRESS: z.string().min(1),
-	WETH_ADDRESS: z.string().min(1),
-	MOCK_ORACLE_ADDRESS: z.string().min(1)
 });
 
 /**

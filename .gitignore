@@ -8,14 +8,12 @@ build/
 .vscode/
 .idea/
 .env
-.env.*
 
 # ===== MONOREPO PACKAGES =====
 packages/*/node_modules/
 packages/*/dist/
 packages/*/build/
 packages/*/.env
-packages/*/.env.*
 
 # =============================
 #           CONTRACTS
@@ -32,7 +30,6 @@ contracts/broadcast/
 contracts/deployments/
 contracts/.openzeppelin/
 contracts/.env
-contracts/.env.*
 
 # Optional if using prettier-plugin-solidity
 contracts/.prettier-cache
@@ -46,7 +43,6 @@ web/defi-vault-app/.next/
 web/defi-vault-app/out/
 web/defi-vault-app/.vercel/
 web/defi-vault-app/.env
-web/defi-vault-app/.env.*
 web/defi-vault-app/.turbo/
 web/defi-vault-app/.cache/
 web/defi-vault-app/node_modules/
@@ -64,26 +60,20 @@ web/defi-vault-app/.output/
 #         (IQAI ADK-TS)
 # =============================
 
-agents/node_modules/
-agents/dist/
-agents/build/
-agents/.env
-agents/.env.*
-agents/coverage/
-agents/*.log
+agents/defi-portfolio/node_modules/
+agents/defi-portfolio/dist/
+agents/defi-portfolio/build/
+agents/defi-portfolio/.env
+agents/defi-portfolio/coverage/
+agents/defi-portfolio/*.log
 
 # ADK-TS local data
-agents/.adk/
-agents/cache/
-agents/tmp/
+agents/defi-portfolio/.adk/
+agents/defi-portfolio/cache/
+agents/defi-portfolio/tmp/
 
 # TypeScript
 agents/*.tsbuildinfo
-
-# If mixing Python in agents (sometimes happens)
-agents/__pycache__/
-agents/**/*.pyc
-agents/.pytest_cache/
 
 # =============================
 #           OS / MISC

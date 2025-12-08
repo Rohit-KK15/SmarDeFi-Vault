@@ -13,7 +13,11 @@ interface DepositModalProps {
 export function DepositModal({ onClose }: DepositModalProps) {
   const { address } = useAccount();
   const [amount, setAmount] = useState("");
+  const [shouldDepositAfterApproval, setShouldDepositAfterApproval] = useState(false);
   const hasValidContracts = isValidAddress(CONTRACTS.VAULT) && isValidAddress(CONTRACTS.LINK);
+
+
+  const amountBigInt = amount ? parseTokenAmount(amount) : BigInt(0);
 
   // Check LINK balance
   const { data: linkBalance } = useReadContract({
@@ -32,10 +36,14 @@ export function DepositModal({ onClose }: DepositModalProps) {
     args: address && CONTRACTS.VAULT ? [address, CONTRACTS.VAULT] : undefined,
   });
 
-  const { writeContract: approveToken, data: approveHash } = useWriteContract();
-  const { writeContract: deposit, data: depositHash } = useWriteContract();
+  const needsApproval = allowance ? amountBigInt > allowance : true;
+  const hasBalance = linkBalance ? amountBigInt <= linkBalance : false;
 
-  const { isLoading: isApproving } = useWaitForTransactionReceipt({
+
+  const { writeContract: approveToken, data: approveHash, isPending: isApprovePending, isError: isApproveWriteError } = useWriteContract();
+  const { writeContract: deposit, data: depositHash, isPending: isDepositPending } = useWriteContract();
+
+  const { isLoading: isApproving, isSuccess: isApprovalSuccess, isError: isApproveReceiptError } = useWaitForTransactionReceipt({
     hash: approveHash,
   });
 
@@ -46,35 +54,53 @@ export function DepositModal({ onClose }: DepositModalProps) {
   useEffect(() => {
     if (isDepositSuccess) {
       setAmount("");
+      setShouldDepositAfterApproval(false);
       onClose();
     }
   }, [isDepositSuccess, onClose]);
 
-  const handleApprove = () => {
+  // Reset state if approval fails (rejected or reverted)
+  useEffect(() => {
+    if (isApproveWriteError || isApproveReceiptError) {
+      setShouldDepositAfterApproval(false);
+    }
+  }, [isApproveWriteError, isApproveReceiptError]);
+
+  useEffect(() => {
+    if (isApprovalSuccess && shouldDepositAfterApproval) {
+      const amountBigInt = parseTokenAmount(amount);
+      deposit({
+        address: CONTRACTS.VAULT,
+        abi: VAULT_ABI,
+        functionName: "deposit",
+        args: [amountBigInt],
+      });
+      setShouldDepositAfterApproval(false);
+    }
+  }, [isApprovalSuccess, shouldDepositAfterApproval, amount, deposit]);
+
+  const handleUnifiedDeposit = () => {
     if (!amount) return;
-    const amountBigInt = parseTokenAmount(amount);
-    approveToken({
-      address: CONTRACTS.LINK,
-      abi: ERC20_ABI,
-      functionName: "approve",
-      args: [CONTRACTS.VAULT, amountBigInt],
-    });
+
+    if (needsApproval) {
+      setShouldDepositAfterApproval(true);
+      approveToken({
+        address: CONTRACTS.LINK,
+        abi: ERC20_ABI,
+        functionName: "approve",
+        args: [CONTRACTS.VAULT, amountBigInt],
+      });
+    } else {
+      deposit({
+        address: CONTRACTS.VAULT,
+        abi: VAULT_ABI,
+        functionName: "deposit",
+        args: [amountBigInt],
+      });
+    }
   };
 
-  const handleDeposit = () => {
-    if (!amount) return;
-    const amountBigInt = parseTokenAmount(amount);
-    deposit({
-      address: CONTRACTS.VAULT,
-      abi: VAULT_ABI,
-      functionName: "deposit",
-      args: [amountBigInt],
-    });
-  };
 
-  const amountBigInt = amount ? parseTokenAmount(amount) : BigInt(0);
-  const needsApproval = allowance ? amountBigInt > allowance : true;
-  const hasBalance = linkBalance ? amountBigInt <= linkBalance : false;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -107,24 +133,29 @@ export function DepositModal({ onClose }: DepositModalProps) {
             <p className="text-sm text-red-400">Insufficient balance</p>
           )}
 
+
           <div className="flex gap-2">
-            {needsApproval && amount && hasBalance ? (
-              <button
-                onClick={handleApprove}
-                disabled={isApproving || !amount || !hasBalance}
-                className="flex-1 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 disabled:opacity-50 rounded-lg transition-colors"
-              >
-                {isApproving ? "Approving..." : "Approve"}
-              </button>
-            ) : (
-              <button
-                onClick={handleDeposit}
-                disabled={isDepositing || !amount || !hasBalance || needsApproval}
-                className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg transition-colors"
-              >
-                {isDepositing ? "Depositing..." : "Deposit"}
-              </button>
-            )}
+            <button
+              onClick={handleUnifiedDeposit}
+              disabled={
+                !amount ||
+                !hasBalance ||
+                isApprovePending ||
+                isApproving ||
+                isDepositPending ||
+                isDepositing ||
+                shouldDepositAfterApproval
+              }
+              className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg transition-colors"
+            >
+              {isApprovePending || isApproving || shouldDepositAfterApproval
+                ? "Approving..."
+                : isDepositPending || isDepositing
+                  ? "Depositing..."
+                  : needsApproval
+                    ? "Approve & Deposit"
+                    : "Deposit"}
+            </button>
             <button
               onClick={onClose}
               className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"

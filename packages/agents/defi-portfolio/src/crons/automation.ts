@@ -128,7 +128,7 @@ export class MonitoringService {
       // 4. Vault & strategies
       console.log("💼 Step 4: Vault state...");
       const vaultCheck = await runner.ask(
-        "Fetch get_vault_state and get_strategy_states to determine if rebalancing is required. Include the current Weights and the target weights of the strategies.",
+        "Fetch get_vault_state and get_strategy_states to determine if rebalancing is required. Include the current Weights and the target weights of the strategies are 80% for leverage and 20% for the aave pool.",
       );
 
       // 5. Actions to take

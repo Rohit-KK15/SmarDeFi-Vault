@@ -17,6 +17,7 @@ export function VaultDashboard() {
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [showMintSuccess, setShowMintSuccess] = useState(false);
   const [apyData, setApyData] = useState<{
     apy: number;
     readable: string;
@@ -151,11 +152,20 @@ export function VaultDashboard() {
   });
 
   // Write contracts
-  const { writeContract: writeToken, data: mintHash, isPending: isMinting } = useWriteContract();
+  const { writeContract: writeToken, data: mintHash, isPending: isMinting, error: mintError } = useWriteContract();
 
-  const { isLoading: isMintConfirming } = useWaitForTransactionReceipt({
+  const { isLoading: isMintConfirming, isSuccess: isMintSuccess } = useWaitForTransactionReceipt({
     hash: mintHash,
   });
+
+  useEffect(() => {
+    if (isMintSuccess) {
+      refetchAll();
+      setShowMintSuccess(true);
+      const timer = setTimeout(() => setShowMintSuccess(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isMintSuccess]);
 
   const handleMintLink = () => {
     if (!address) return;
@@ -296,7 +306,7 @@ export function VaultDashboard() {
             <p className="text-3xl font-bold text-white">Loading...</p>
           ) : apyData ? (
             <div>
-              <p className={`text-3xl font-bold ${growthColor}`}>1887.23%</p>
+              <p className={`text-3xl font-bold text-green-400`}>1887.23%</p>
               {apyData.message && (
                 <p className="text-xs text-gray-500 mt-1">LIVE APY</p>
               )}
@@ -342,11 +352,31 @@ export function VaultDashboard() {
             <div className="mt-6 pt-6 border-t border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <button
                 onClick={handleMintLink}
-                disabled={isMinting || isMintConfirming || !address}
-                className="px-4 py-3 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 border border-yellow-500/20 rounded-xl font-medium transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                disabled={isMinting || isMintConfirming || !address || showMintSuccess}
+                className={`px-4 py-3 border rounded-xl font-medium transition-all flex items-center justify-center gap-2 disabled:opacity-50 ${showMintSuccess
+                  ? "bg-green-500/10 text-green-400 border-green-500/20"
+                  : mintError
+                    ? "bg-red-500/10 text-red-400 border-red-500/20"
+                    : "bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 border-yellow-500/20"
+                  }`}
               >
-                <DollarSign size={16} />
-                {isMinting || isMintConfirming ? "Minting..." : "Mint Mock LINK"}
+                {showMintSuccess ? (
+                  <>
+                    <Check size={16} />
+                    Success!
+                  </>
+                ) : (
+                  <>
+                    <DollarSign size={16} />
+                    {isMinting
+                      ? "Check Wallet..."
+                      : isMintConfirming
+                        ? "Minting..."
+                        : mintError
+                          ? "Retry Mint"
+                          : "Mint Mock LINK"}
+                  </>
+                )}
               </button>
 
               <button
@@ -356,6 +386,17 @@ export function VaultDashboard() {
                 {linkCopied ? <Check size={16} /> : <Copy size={16} />}
                 {linkCopied ? "Copied LINK Address" : "Copy LINK Address"}
               </button>
+            </div>
+
+            <div className="mt-4 flex justify-center">
+              <a
+                href="https://cloud.google.com/application/web3/faucet/ethereum/sepolia"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1"
+              >
+                Need Sepolia ETH for gas? <span className="underline">Get it here</span>
+              </a>
             </div>
           </div>
 

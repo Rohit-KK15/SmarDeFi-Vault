@@ -4,7 +4,7 @@ import { injected, walletConnect } from 'wagmi/connectors'
 
 // Get environment variables - use proper Next.js env format
 const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || ''
-const sepoliaRpcUrl = process.env.RPC_URL || `https://eth-sepolia.g.alchemy.com/v2/demo`
+const sepoliaRpcUrl = process.env.RPC_URL || `https://sepolia.infura.io/v3/bb0f90b39a0c429986192a19e16acdc4`
 
 /**
  * Wagmi configuration with multiple chains and connectors

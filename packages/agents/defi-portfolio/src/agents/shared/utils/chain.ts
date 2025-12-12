@@ -1,7 +1,10 @@
 import { ethers } from "ethers";
 import { env } from "../../../env";
 
-const provider = new ethers.JsonRpcProvider(env.RPC_URL);
+const provider = new ethers.JsonRpcProvider(env.RPC_URL,{
+chainId: 11155111,
+name: "sepolia"  
+});
 
 // ❗ If you want write-access with private key:
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);

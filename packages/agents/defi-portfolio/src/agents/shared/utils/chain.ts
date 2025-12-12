@@ -3,7 +3,8 @@ import { env } from "../../../env";
 
 const provider = new ethers.JsonRpcProvider(env.RPC_URL,{
 chainId: 11155111,
-name: "sepolia"  
+name: "sepolia",
+ensNetwork: undefined,
 });
 
 // ❗ If you want write-access with private key:
